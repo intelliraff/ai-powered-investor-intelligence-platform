@@ -1,0 +1,35 @@
+# Environment Variables
+.env
+.env.*
+
+# Git
+.git
+.gitignore
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Virtual Environment
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Documentation
+*.md
+
+.DS_Store
+
+data/raw_pdfs/*
+data/markdown/*
+data/vectorstore/*
+
+.pytest_cache/
+.mypy_cache/
+.coverage
+dist/
+build/
+*.egg-info/

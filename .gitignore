@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.python-version
+.venv/
+venv/
+.venv-1/
+venv-1/
+ENV/
+env/
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Database
+*.sqlite3
+*.db
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDEs
+.idea/
+
+# Python bytecode
+*.pyc
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Sensitive files
+secrets.json
+credentials.json
+
+create_index.py

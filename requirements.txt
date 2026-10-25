@@ -1,0 +1,26 @@
+# API
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+
+# PDF processing
+pymupdf
+pymupdf4llm
+
+# Local RAG and embeddings
+langchain
+langchain-core
+langchain-community
+langchain-experimental
+langchain-huggingface
+sentence-transformers
+faiss-cpu
+
+# Local LLM
+ollama
+
+# Validation and database
+pydantic
+sqlalchemy
+psycopg2-binary

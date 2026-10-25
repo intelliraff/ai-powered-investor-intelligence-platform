@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>InvestorAI</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 17L10 11L14 15L21 7"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <span>InvestorAI</span>
+
+        </div>
+
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <span>System Online</span>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <section class="hero">
+
+            <div class="hero-badge">
+                <span>✦</span>
+                AI Financial Intelligence
+            </div>
+
+
+            <h1>
+                Understand your
+                <span>financial reports.</span>
+            </h1>
+
+
+            <p class="hero-description">
+                Upload a financial report and ask questions in natural language.
+                Get answers grounded in the information contained in your documents.
+            </p>
+
+
+            <!-- ================= UPLOAD ================= -->
+
+            <div
+                class="upload-zone"
+                id="dropzone"
+                onclick="document.getElementById('fileInput').click()"
+            >
+
+                <div class="upload-icon">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M12 16V4"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M7 9L12 4L17 9"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+
+                        <path
+                            d="M5 20H19"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="upload-title">
+                    Upload a financial report
+                </div>
+
+
+                <div class="upload-description">
+                    Drag & drop your PDF here or
+                    <span>browse files</span>
+                </div>
+
+
+                <div class="upload-format">
+                    PDF • Financial Reports • 10-K • 10-Q
+                </div>
+
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept=".pdf"
+                    hidden
+                />
+
+            </div>
+
+
+            <!-- ================= PROGRESS ================= -->
+
+            <div
+                class="progress-wrapper"
+                id="progressContainer"
+            >
+
+                <div class="progress-info">
+
+                    <span id="progressStatus">
+                        Processing report...
+                    </span>
+
+                    <span id="progressPercent">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill"
+                        id="progressBarFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= DIVIDER ================= -->
+
+            <div class="divider">
+
+                <span>or ask your documents</span>
+
+            </div>
+
+
+            <!-- ================= CHAT ================= -->
+
+            <section class="chat-container">
+
+                <div class="chat-header">
+
+                    <div class="ai-profile">
+
+                        <div class="ai-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"
+                                    fill="currentColor"/>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="ai-name">
+                                AI Financial Analyst
+                            </div>
+
+                            <div class="ai-subtitle">
+                                Ask questions about your reports
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Messages -->
+
+                <div
+                    class="chat-messages"
+                    id="chatMessages"
+                >
+
+                    <div class="welcome-message">
+
+                        <div class="welcome-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"
+                                    fill="currentColor"/>
+
+                            </svg>
+
+                        </div>
+
+
+                        <h3>
+                            What would you like to know?
+                        </h3>
+
+
+                        <p>
+                            Ask about revenue, profitability, risks,
+                            growth, cash flow, or any other information
+                            from your uploaded reports.
+                        </p>
+
+
+                        <div class="suggestion-grid">
+
+                            <button onclick="useSuggestion('What was the company revenue?')">
+                                What was the company revenue?
+                            </button>
+
+                            <button onclick="useSuggestion('What are the major risks?')">
+                                What are the major risks?
+                            </button>
+
+                            <button onclick="useSuggestion('How did profitability change?')">
+                                How did profitability change?
+                            </button>
+
+                            <button onclick="useSuggestion('Summarize this financial report')">
+                                Summarize this report
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Input -->
+
+                <div class="chat-input-wrapper">
+
+                    <div class="chat-input-box">
+
+                        <textarea
+                            id="chatInput"
+                            placeholder="Ask anything about your financial reports..."
+                            rows="1"
+                        ></textarea>
+
+
+                        <button
+                            id="sendBtn"
+                            onclick="sendMessage()"
+                            aria-label="Send"
+                        >
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M5 12L3 4L21 12L3 20L5 12ZM5 12H14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div class="footer-text">
+                AI responses are generated from your uploaded financial documents.
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= TOAST ================= -->
+
+    <div
+        class="toast-container"
+        id="toastContainer"
+    ></div>
+
+</div>
+
+
+<script>
+
+const dropzone = document.getElementById("dropzone");
+const fileInput = document.getElementById("fileInput");
+
+const progressContainer =
+    document.getElementById("progressContainer");
+
+const progressBar =
+    document.getElementById("progressBarFill");
+
+const progressStatus =
+    document.getElementById("progressStatus");
+
+const progressPercent =
+    document.getElementById("progressPercent");
+
+const chatInput =
+    document.getElementById("chatInput");
+
+const chatMessages =
+    document.getElementById("chatMessages");
+
+const sendBtn =
+    document.getElementById("sendBtn");
+
+// These values are populated from the uploaded filename using
+// the same convention as ingestion/ingest_documents.py.
+let activeCompany = null;
+let activeYear = null;
+
+
+function getReportMetadata(fileName) {
+
+    const stem = fileName.replace(/\.pdf$/i, "");
+    const parts = stem.split("_");
+
+    if (/^\d+$/.test(parts[0])) {
+
+        return {
+            company: parts[parts.length - 1],
+            year: Number(parts[0])
+        };
+
+    }
+
+    if (parts.length >= 2 && /^\d+$/.test(parts[1])) {
+
+        return {
+            company: parts[0],
+            year: Number(parts[1])
+        };
+
+    }
+
+    return {
+        company: stem,
+        year: null
+    };
+
+}
+
+
+// =====================================================
+// FILE UPLOAD
+// =====================================================
+
+fileInput.addEventListener("change", () => {
+
+    if (fileInput.files.length > 0) {
+
+        handleUpload(fileInput.files[0]);
+
+    }
+
+});
+
+
+dropzone.addEventListener("dragover", (event) => {
+
+    event.preventDefault();
+
+    dropzone.classList.add("dragging");
+
+});
+
+
+dropzone.addEventListener("dragleave", () => {
+
+    dropzone.classList.remove("dragging");
+
+});
+
+
+dropzone.addEventListener("drop", (event) => {
+
+    event.preventDefault();
+
+    dropzone.classList.remove("dragging");
+
+    const files = event.dataTransfer.files;
+
+    if (files.length > 0) {
+
+        handleUpload(files[0]);
+
+    }
+
+});
+
+
+async function handleUpload(file) {
+
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+
+        showToast(
+            "Invalid file",
+            "Please upload a PDF financial report.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    progressContainer.classList.add("visible");
+
+    progressBar.style.width = "10%";
+
+    progressPercent.textContent = "10%";
+
+    progressStatus.textContent =
+        "Uploading report...";
+
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const reportMetadata = getReportMetadata(file.name);
+
+    dropzone.style.pointerEvents = "none";
+
+
+    try {
+
+        const response = await fetch(
+            "/upload",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+        progressBar.style.width = "70%";
+
+        progressPercent.textContent = "70%";
+
+        progressStatus.textContent =
+            "Processing financial data...";
+
+
+        if (!response.ok) {
+
+            const error =
+                await response.json().catch(() => ({}));
+
+            throw new Error(
+                error.detail ||
+                error.message ||
+                "Upload failed"
+            );
+
+        }
+
+
+        progressBar.style.width = "100%";
+
+        progressPercent.textContent = "100%";
+
+        progressStatus.textContent =
+            "Report ready";
+
+        activeCompany = reportMetadata.company;
+        activeYear = reportMetadata.year;
+
+
+        showToast(
+            "Report ready",
+            `${file.name} has been successfully processed.`,
+            "success"
+        );
+
+
+        setTimeout(() => {
+
+            progressContainer.classList.remove("visible");
+
+            chatInput.focus();
+
+        }, 1000);
+
+
+    } catch (error) {
+
+        progressContainer.classList.remove("visible");
+
+        showToast(
+            "Upload failed",
+            error.message,
+            "error"
+        );
+
+    } finally {
+
+        dropzone.style.pointerEvents = "";
+        fileInput.value = "";
+
+    }
+
+}
+
+
+// =====================================================
+// SUGGESTIONS
+// =====================================================
+
+function useSuggestion(text) {
+
+    chatInput.value = text;
+
+    chatInput.focus();
+
+}
+
+
+// =====================================================
+// CHAT
+// =====================================================
+
+async function sendMessage() {
+
+    const question =
+        chatInput.value.trim();
+
+
+    if (!question) return;
+
+
+    // Remove welcome screen
+    const welcome =
+        document.querySelector(".welcome-message");
+
+    if (welcome) {
+
+        welcome.remove();
+
+    }
+
+
+    appendMessage(
+        "user",
+        question
+    );
+
+
+    chatInput.value = "";
+
+    chatInput.style.height = "auto";
+
+
+    const typingId =
+        showTypingIndicator();
+
+    sendBtn.disabled = true;
+    chatInput.disabled = true;
+
+
+    try {
+
+        const response = await fetch(
+            "/chat",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    question: question,
+                    company: activeCompany,
+                    year: activeYear
+                })
+            }
+        );
+
+
+        removeTypingIndicator(
+            typingId
+        );
+
+
+        if (!response.ok) {
+
+            const error =
+                await response.json()
+                    .catch(() => ({}));
+
+
+            appendMessage(
+                "bot",
+                error.detail ||
+                "Something went wrong while processing your question."
+            );
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        appendMessage(
+            "bot",
+            data.answer ||
+            "I couldn't generate an answer."
+        );
+
+
+    } catch (error) {
+
+        removeTypingIndicator(
+            typingId
+        );
+
+
+        appendMessage(
+            "bot",
+            "I couldn't connect to the AI service. Please make sure the backend is running."
+        );
+
+    } finally {
+
+        removeTypingIndicator(typingId);
+        sendBtn.disabled = false;
+        chatInput.disabled = false;
+        chatInput.focus();
+
+    }
+
+}
+
+
+// =====================================================
+// MESSAGE RENDERING
+// =====================================================
+
+function appendMessage(role, text) {
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        `message ${role}`;
+
+
+    const avatar =
+        document.createElement("div");
+
+
+    avatar.className =
+        "message-avatar";
+
+
+    avatar.innerHTML =
+        role === "bot"
+            ? "✦"
+            : "You";
+
+
+    const bubble =
+        document.createElement("div");
+
+
+    bubble.className =
+        "message-bubble";
+
+
+    bubble.textContent =
+        text;
+
+
+    message.appendChild(avatar);
+
+    message.appendChild(bubble);
+
+
+    chatMessages.appendChild(message);
+
+
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+
+}
+
+
+// =====================================================
+// TYPING INDICATOR
+// =====================================================
+
+let typingCounter = 0;
+
+
+function showTypingIndicator() {
+
+    const id =
+        `typing-${++typingCounter}`;
+
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        "message bot";
+
+
+    message.id = id;
+
+
+    message.innerHTML = `
+
+        <div class="message-avatar">
+            ✦
+        </div>
+
+        <div class="message-bubble typing">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    `;
+
+
+    chatMessages.appendChild(
+        message
+    );
+
+
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+
+
+    return id;
+
+}
+
+
+function removeTypingIndicator(id) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.remove();
+
+    }
+
+}
+
+
+// =====================================================
+// ENTER TO SEND
+// =====================================================
+
+chatInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+// Auto-grow textarea
+
+chatInput.addEventListener(
+    "input",
+    () => {
+
+        chatInput.style.height =
+            "auto";
+
+        chatInput.style.height =
+            `${chatInput.scrollHeight}px`;
+
+    }
+);
+
+
+// =====================================================
+// TOAST
+// =====================================================
+
+function showToast(
+    title,
+    message,
+    type = "success"
+) {
+
+    const container =
+        document.getElementById(
+            "toastContainer"
+        );
+
+
+    const toast =
+        document.createElement("div");
+
+
+    toast.className =
+        `toast ${type}`;
+
+
+    toast.innerHTML = `
+
+        <div class="toast-symbol">
+            ${type === "success" ? "✓" : "!"}
+        </div>
+
+        <div>
+
+            <div class="toast-title">
+                ${title}
+            </div>
+
+            <div class="toast-message">
+                ${message}
+            </div>
+
+        </div>
+
+    `;
+
+
+    container.appendChild(toast);
+
+
+    setTimeout(() => {
+
+        toast.classList.add("show");
+
+    }, 10);
+
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+        setTimeout(() => {
+
+            toast.remove();
+
+        }, 300);
+
+    }, 4000);
+
+}
+
+</script>
+
+</body>
+</html>

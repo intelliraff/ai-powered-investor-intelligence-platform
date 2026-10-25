@@ -1,0 +1,45 @@
+from pathlib import Path
+from langchain_core.documents import Document
+from langchain_experimental.text_splitter import SemanticChunker
+from langchain_huggingface import HuggingFaceEmbeddings
+
+
+def read_markdown(markdown_file: str) -> str:
+    return Path(markdown_file).read_text(encoding="utf-8")
+
+
+def chunk_markdown(
+    markdown_file: str,
+    embeddings
+) -> list[Document]:
+
+    markdown_content = read_markdown(markdown_file)
+
+    splitter = SemanticChunker(
+        embeddings=embeddings,
+        breakpoint_threshold_type="percentile"
+    )
+
+    return splitter.create_documents([markdown_content])
+
+if __name__ == "__main__":
+
+    print("Loading embedding model...")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    )
+    print("Embedding model loaded!")
+    markdown_file = "../data/markdown/2024_Apple.md"
+    chunks = chunk_markdown(
+        markdown_file=markdown_file,
+        embeddings=embeddings
+    )
+    print(f"\nGenerated {len(chunks)} chunks\n")
+    for index, chunk in enumerate(chunks[:3]):
+
+        print("=" * 80)
+        print(f"Chunk {index + 1}")
+        print("=" * 80)
+
+        print(chunk.page_content[:1000])
+        print()
